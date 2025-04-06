@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Harmony Generator App</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0f7f9, #f2fafd);
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    header {
+      background-color: #00b3b3;
+      width: 100%;
+      padding: 20px 0;
+      text-align: center;
+      color: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    header h1 {
+      margin: 0;
+    }
+    .app-container {
+      max-width: 960px;
+      padding: 30px;
+      width: 100%;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    select, button {
+      padding: 12px 18px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #00b3b3;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #009999;
+    }
+    .palette {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .color-box {
+      width: 180px;
+      height: 180px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 14px;
+      color: white;
+      padding-bottom: 12px;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .color-box:hover {
+      transform: scale(1.05);
+    }
+    .tooltip {
+      position: absolute;
+      top: 10px;
+      background-color: #000000aa;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      display: none;
+    }
+    .show {
+      display: block;
+    }
+    footer {
+      margin-top: auto;
+      padding: 20px;
+      background-color: #f1f1f1;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎨 Color Harmony Generator App</h1>
+    <p>Tạo phối màu đẹp mắt với 1 cú click</p>
+  </header>
+
+  <div class="app-container">
+    <div class="controls">
+      <select id="toneSelect">
+        <option value="174">Xanh Ngọc Lam (Turquoise)</option>
+        <option value="300">Tím Hoa Oải Hương (Lavender)</option>
+        <option value="14">Cam San Hô (Coral)</option>
+        <option value="45">Vàng Mật Ong (Honey Gold)</option>
+        <option value="210">Xanh Dương Nhạt (Soft Blue)</option>
+        <option value="120">Xanh Lá Tươi (Fresh Green)</option>
+      </select>
+      <button onclick="generateColors()">Tạo phối màu</button>
+    </div>
+
+    <div class="palette" id="palette"></div>
+  </div>
+
+  <footer>
+    &copy; 2025 by Giáo Ộp. Made with 💙 for sáng tạo & học tập.
+  </footer>
+
+  <script>
+    function generateColors() {
+      const palette = document.getElementById("palette");
+      palette.innerHTML = "";
+      const baseHue = parseInt(document.getElementById("toneSelect").value);
+      const saturation = 65;
+      const lightness = 55;
+      const hues = [baseHue, (baseHue + 30) % 360, (baseHue + 60) % 360];
+
+      hues.forEach(hue => {
+        const hsl = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+        const div = document.createElement("div");
+        div.className = "color-box";
+        div.style.backgroundColor = hsl;
+        div.innerHTML = `<span class="tooltip">Đã copy!</span>${hsl}`;
+        div.onclick = function () {
+          navigator.clipboard.writeText(hsl);
+          const tooltip = div.querySelector(".tooltip");
+          tooltip.classList.add("show");
+          setTimeout(() => tooltip.classList.remove("show"), 1500);
+        };
+        palette.appendChild(div);
+      });
+    }
+
+    generateColors();
+  </script>
+</body>
+</html>
